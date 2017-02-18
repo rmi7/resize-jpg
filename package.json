@@ -1,0 +1,25 @@
+{
+  "name": "resize-jpg",
+  "version": "0.1.0",
+  "description": "convert jpg files to jpg files with a different dimension while keeping quality (by converting them to png files in between)",
+  "main": "index.js",
+  "bin": {
+    "resize-jpg": "./index.js"
+  },
+  "keywords": [
+    "jpg",
+    "png",
+    "resize",
+    "imagemagick",
+    "cli",
+    "convert"
+  ],
+  "author": "Sander 'rmi7' Remie <user@rmi7.me>",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "imagemagick": "^0.1.3",
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.4.4"
+  }
+}
