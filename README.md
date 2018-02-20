@@ -1,5 +1,9 @@
 # resize jpg
 
+![License](https://img.shields.io/github/license/rmi7/resize-jpg.svg?style=flat-square)
+[![Version](https://img.shields.io/npm/v/resize-jpg.svg?style=flat-square&label=version)](https://www.npmjs.com/package/resize-jpg)
+![Downloads](https://img.shields.io/npm/dt/resize-jpg.svg)
+
 Ever wanted to resize a `jpg` image and getting awful results when just directly resizing
 the `jpg`? Why doesn't that work? Well, `jpg` are not made to be resized without quality loss.
 But `png` images can be resized without (visible) quality loss. So what about converting
