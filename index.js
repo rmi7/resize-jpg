@@ -104,18 +104,37 @@ const convertJpgToPng = (input_dir, original_file_name, temp_dir_path) => {
 
 const resizePng = (temp_first_file_name, temp_dir_path, new_width, new_height) => {
     return new Promise((resolve, reject) => {
-
         const temp_second_file_name = createSecondTempFileName(temp_first_file_name)
 
-        im.resize({
-            "srcPath": path.join(temp_dir_path, temp_first_file_name),
-            "dstPath": path.join(temp_dir_path, temp_second_file_name),
-            "width": new_width,
-            "height": new_height
-        }, (e) => {
-            (e) ? reject(er) : resolve(temp_second_file_name)
-        })
-    })
+        if (new_height && new_width) { // resize to "width/height", keep aspect ratio
+          im.resize({
+              "srcPath": path.join(temp_dir_path, temp_first_file_name),
+              "dstPath": path.join(temp_dir_path, temp_second_file_name),
+              "width": new_width,
+              "height": new_height
+          }, (e) => {
+              (e) ? reject(er) : resolve(temp_second_file_name)
+          })
+        } else if (new_height) { // resize to "height", keep aspect ratio
+          im.convert([
+            path.join(temp_dir_path, temp_first_file_name),
+            '-geometry',
+            `x${new_height}`,
+            path.join(temp_dir_path, temp_second_file_name),
+          ], (e) => {
+              (e) ? reject(er) : resolve(temp_second_file_name)
+          });
+        } else if (new_width) { // resize to "width", keep aspect ratio
+          im.convert([
+            path.join(temp_dir_path, temp_first_file_name),
+            '-resize',
+            `${new_width}`,
+            path.join(temp_dir_path, temp_second_file_name),
+          ], (e) => {
+              (e) ? reject(er) : resolve(temp_second_file_name)
+          });
+        }
+    });
 }
 
 const convertPngToJpg = (temp_second_file_name, temp_dir_path, outputdir_path) => {
@@ -154,7 +173,7 @@ function main() {
       .option("-w, --resize_width <resize_width>", `resize width (min: ${MIN_DIMENSION}, max: ${MAX_DIMENSION})`, parseDimension)
       .option("-h, --resize_height <resize_height>", `resize height (min: ${MIN_DIMENSION}, max: ${MAX_DIMENSION})`, parseDimension)
       .parse(process.argv)
-    if (!program.resize_width || !program.resize_height) {
+    if (!program.resize_width && !program.resize_height) {
         program.outputHelp()
     }
 
